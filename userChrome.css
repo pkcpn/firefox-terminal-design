@@ -1,0 +1,352 @@
+/* Terminal-style Firefox chrome theme: black + phosphor green */
+:root {
+  --term-bg: #070b07 !important;
+  --term-bg-soft: #0d140d !important;
+  --term-line: #39ff14 !important;
+  --term-line-dim: #2dad16 !important;
+  --term-text: #b6ff9f !important;
+  --term-text-strong: #d7ffc8 !important;
+  --term-alert: #74ff58 !important;
+  --term-line-width: 2px !important;
+  --term-radius: 10px !important;
+  --term-rail-width: 5px !important;
+  --term-rail-radius: 999px !important;
+  --term-tab-inactive-bg: color-mix(in srgb, var(--term-bg) 95%, var(--term-line) 5%) !important;
+  --term-tab-hover-bg: color-mix(in srgb, var(--term-bg) 74%, var(--term-line) 26%) !important;
+  --term-tab-active-bg: color-mix(in srgb, var(--term-bg) 38%, var(--term-line) 62%) !important;
+  --term-ui-radius: 10px !important;
+  --term-ui-gap: 8px !important;
+  --term-bookmarks-pad-y: 8px !important;
+  --term-hover-ms: 120ms !important;
+  --term-focus-glow: 8px !important;
+  --term-tab-glow: 16px !important;
+  --term-bookmark-icon-size: 22px !important;
+  --status-normal: var(--term-line) !important;
+  --status-dim: var(--term-line-dim) !important;
+  --status-warning: #ffb347 !important;
+}
+
+:root[uidensity="compact"] {
+  --term-ui-radius: 7px !important;
+  --term-ui-gap: 5px !important;
+  --term-bookmarks-pad-y: 5px !important;
+  --term-hover-ms: 90ms !important;
+  --term-focus-glow: 5px !important;
+  --term-tab-glow: 10px !important;
+  --term-bookmark-icon-size: 18px !important;
+}
+
+/* Global browser chrome colors */
+#main-window,
+#navigator-toolbox,
+#titlebar,
+#nav-bar,
+#PersonalToolbar,
+#TabsToolbar,
+.tabbrowser-tab,
+.tab-content,
+.tab-background {
+  background: var(--term-bg) !important;
+  color: var(--term-text) !important;
+}
+
+/* Keep structural order: URL bar -> Bookmarks -> Tabs */
+#nav-bar {
+  -moz-box-ordinal-group: 1 !important;
+  position: relative !important;
+  border-bottom: none !important;
+  padding-top: 7px !important;
+}
+
+#PersonalToolbar {
+  -moz-box-ordinal-group: 2 !important;
+  position: relative !important;
+  border-bottom: none !important;
+  padding-top: var(--term-bookmarks-pad-y) !important;
+  padding-bottom: var(--term-bookmarks-pad-y) !important;
+  background: var(--term-bg-soft) !important;
+}
+
+#TabsToolbar {
+  -moz-box-ordinal-group: 3 !important;
+  border-bottom: var(--term-line-width) solid var(--term-line) !important;
+  min-height: 36px !important;
+}
+
+/* Rounded guardrails */
+#nav-bar::before,
+#nav-bar::after,
+#PersonalToolbar::before,
+#PersonalToolbar::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 0 !important;
+  right: 0 !important;
+  height: var(--term-rail-width) !important;
+  border-radius: 0 !important;
+  pointer-events: none !important;
+}
+
+/* Guardrail above the search/address bar */
+#nav-bar::before {
+  top: 0 !important;
+  height: 2px !important;
+  background: color-mix(in srgb, var(--status-dim) 72%, #000000 28%) !important;
+}
+
+#nav-bar::after {
+  top: 2px !important;
+  height: 1px !important;
+  background: color-mix(in srgb, var(--status-dim) 54%, #000000 46%) !important;
+}
+
+#nav-bar:focus-within::after {
+  background: color-mix(in srgb, var(--status-normal) 62%, #000000 38%) !important;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--status-dim) 34%, transparent) !important;
+}
+
+/* Guardrails around bookmarks bar */
+#PersonalToolbar::before {
+  top: 0 !important;
+  background: color-mix(in srgb, var(--status-dim) 88%, #000000 12%) !important;
+}
+
+#PersonalToolbar::after {
+  bottom: 0 !important;
+  background: color-mix(in srgb, var(--status-dim) 82%, #000000 18%) !important;
+  box-shadow: 0 0 6px color-mix(in srgb, var(--status-dim) 24%, transparent) !important;
+}
+
+/* URL/search bar */
+#urlbar-background,
+#searchbar,
+.searchbar-textbox {
+  background: #000000 !important;
+  border: var(--term-line-width) solid var(--status-normal) !important;
+  color: var(--term-text-strong) !important;
+  border-radius: var(--term-ui-radius) !important;
+}
+
+#urlbar,
+#searchbar {
+  --toolbar-field-background-color: #000000 !important;
+  --toolbar-field-focus-background-color: #000000 !important;
+}
+
+#urlbar-input-container,
+#urlbar-input,
+#urlbar-search-mode-indicator,
+#urlbar-label-box {
+  background: #000000 !important;
+}
+
+#urlbar[open="true"] > #urlbar-background,
+#urlbar[focused="true"] > #urlbar-background {
+  background: #000000 !important;
+}
+
+#urlbar[focused="true"] #urlbar-input-container,
+#urlbar[open="true"] #urlbar-input-container,
+#urlbar[focused="true"] #urlbar-input,
+#urlbar[open="true"] #urlbar-input,
+#urlbar[focused="true"] #urlbar-search-mode-indicator,
+#urlbar[open="true"] #urlbar-search-mode-indicator,
+#urlbar[focused="true"] #urlbar-label-box,
+#urlbar[open="true"] #urlbar-label-box {
+  background: #000000 !important;
+}
+
+#urlbar[focused="true"] > #urlbar-background {
+  box-shadow: 0 0 0 var(--term-line-width) var(--status-normal), 0 0 var(--term-focus-glow) color-mix(in srgb, var(--status-normal) 50%, transparent) !important;
+}
+
+/* URL bar results dropdown */
+#urlbar-results,
+.urlbarView,
+.urlbarView-body-outer,
+.urlbarView-body-inner {
+  background: #050805 !important;
+  color: var(--term-text) !important;
+  border-color: var(--status-dim) !important;
+}
+
+.urlbarView-row {
+  background: transparent !important;
+  color: var(--term-text) !important;
+}
+
+.urlbarView-row[selected] {
+  background: color-mix(in srgb, var(--term-bg) 72%, var(--term-line) 28%) !important;
+  color: var(--term-text-strong) !important;
+}
+
+.urlbarView-row[type="tip"][selected],
+.urlbarView-row[type="tip"] {
+  border-left: 2px solid var(--status-warning) !important;
+}
+
+#identity-box,
+#tracking-protection-icon-container,
+#star-button-box,
+#page-action-buttons {
+  color: var(--term-text) !important;
+}
+
+/* Tabs */
+.tabbrowser-tab {
+  color: var(--term-text) !important;
+  font-family: "Cascadia Mono", "JetBrains Mono", "Consolas", monospace !important;
+  font-size: 12px !important;
+  letter-spacing: 0.2px !important;
+}
+
+.tabbrowser-tab .tab-background {
+  border: var(--term-line-width) solid transparent !important;
+  border-radius: var(--term-ui-radius) !important;
+  margin-block: 2px !important;
+  margin-inline: var(--term-ui-gap) !important;
+  background: transparent !important;
+}
+
+.tabbrowser-tab .tab-content {
+  position: relative !important;
+  border: var(--term-line-width) solid transparent !important;
+  border-radius: var(--term-ui-radius) !important;
+  background: var(--term-tab-inactive-bg) !important;
+  transition: background var(--term-hover-ms) ease, border-color var(--term-hover-ms) ease, box-shadow var(--term-hover-ms) ease !important;
+}
+
+.tabbrowser-tab:hover .tab-background {
+  border-color: transparent !important;
+}
+
+.tabbrowser-tab:hover .tab-content {
+  border-color: var(--status-dim) !important;
+  background: var(--term-tab-hover-bg) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-background,
+.tabbrowser-tab[visuallyselected="true"] .tab-background {
+  border-color: transparent !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-content,
+.tabbrowser-tab[visuallyselected="true"] .tab-content {
+  border-color: var(--status-normal) !important;
+  background: var(--term-tab-active-bg) !important;
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--status-normal) 86%, #ffffff 14%), 0 0 var(--term-tab-glow) color-mix(in srgb, var(--status-normal) 60%, transparent) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-content::after,
+.tabbrowser-tab[visuallyselected="true"] .tab-content::after {
+  content: "" !important;
+  position: absolute !important;
+  left: 8px !important;
+  right: 8px !important;
+  bottom: 2px !important;
+  height: 3px !important;
+  border-radius: 3px !important;
+  background: color-mix(in srgb, var(--status-normal) 92%, #ffffff 8%) !important;
+}
+
+.tabbrowser-tab[selected="true"] .tab-label,
+.tabbrowser-tab[visuallyselected="true"] .tab-label {
+  color: var(--term-text-strong) !important;
+  font-weight: 700 !important;
+  text-shadow: 0 0 8px color-mix(in srgb, var(--term-line) 55%, transparent) !important;
+}
+
+.tabbrowser-tab:not([selected="true"]):not([visuallyselected="true"]) .tab-label {
+  color: color-mix(in srgb, var(--term-text) 72%, #000000 28%) !important;
+}
+
+/* Toolbar and bookmark buttons */
+#nav-bar toolbarbutton,
+#PersonalToolbar toolbarbutton,
+#TabsToolbar toolbarbutton {
+  color: var(--term-text) !important;
+  border-radius: var(--term-ui-radius) !important;
+  transition: background var(--term-hover-ms) ease, color var(--term-hover-ms) ease !important;
+}
+
+/* Bookmarks UX: subtle hover animation + consistent icon backdrop */
+#PersonalToolbar .bookmark-item {
+  border-radius: var(--term-ui-radius) !important;
+  transition: background var(--term-hover-ms) ease, color var(--term-hover-ms) ease, transform var(--term-hover-ms) ease !important;
+}
+
+#PersonalToolbar .bookmark-item:hover {
+  transform: translateY(-1px) !important;
+}
+
+#PersonalToolbar .bookmark-item .toolbarbutton-icon {
+  width: var(--term-bookmark-icon-size) !important;
+  height: var(--term-bookmark-icon-size) !important;
+  padding: 2px !important;
+  border-radius: calc(var(--term-ui-radius) - 2px) !important;
+  background: #000000 !important;
+  border: none !important;
+  transition: border-color var(--term-hover-ms) ease, background var(--term-hover-ms) ease !important;
+}
+
+#PersonalToolbar .bookmark-item:hover .toolbarbutton-icon {
+  background: color-mix(in srgb, #000000 88%, var(--status-normal) 12%) !important;
+}
+
+#nav-bar toolbarbutton:hover,
+#PersonalToolbar toolbarbutton:hover,
+#TabsToolbar toolbarbutton:hover {
+  background: color-mix(in srgb, var(--term-bg) 80%, var(--term-line) 20%) !important;
+}
+
+#nav-bar toolbarbutton[open="true"],
+#PersonalToolbar toolbarbutton[open="true"] {
+  outline: var(--term-line-width) solid var(--status-warning) !important;
+}
+
+/* Menus / popups */
+menupopup,
+panel,
+.panel-subview-body {
+  --panel-background: #050805 !important;
+  --panel-color: var(--term-text) !important;
+  --panel-border-color: var(--status-normal) !important;
+  border-radius: var(--term-ui-radius) !important;
+}
+
+menu[_moz-menuactive="true"],
+menuitem[_moz-menuactive="true"] {
+  background: color-mix(in srgb, var(--term-bg) 72%, var(--status-normal) 28%) !important;
+  color: var(--term-text-strong) !important;
+}
+
+/* Left sidebar launcher (Bookmarks / History / Synced Tabs) */
+#sidebar-main,
+#sidebar-box,
+#sidebar,
+#sidebar-header {
+  background: var(--term-bg-soft) !important;
+  color: var(--term-text) !important;
+  border-color: color-mix(in srgb, var(--status-dim) 70%, transparent) !important;
+}
+
+#sidebar-main toolbarbutton,
+#sidebar-box toolbarbutton,
+#sidebar-header toolbarbutton {
+  color: var(--term-text) !important;
+  border-radius: var(--term-ui-radius) !important;
+  background: transparent !important;
+}
+
+#sidebar-main toolbarbutton:hover,
+#sidebar-box toolbarbutton:hover,
+#sidebar-header toolbarbutton:hover {
+  background: color-mix(in srgb, var(--term-bg) 82%, var(--status-normal) 18%) !important;
+}
+
+#sidebar-main toolbarbutton[checked="true"],
+#sidebar-main toolbarbutton[open="true"],
+#sidebar-main toolbarbutton[aria-pressed="true"] {
+  background: color-mix(in srgb, var(--term-bg) 68%, var(--status-normal) 32%) !important;
+  outline: 1px solid var(--status-dim) !important;
+}

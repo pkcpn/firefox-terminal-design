@@ -1,0 +1,123 @@
+/* Terminal-style theming for built-in Firefox pages */
+@-moz-document url-prefix("about:"), url-prefix("moz-extension://") {
+  :root {
+    color-scheme: dark !important;
+    --status-normal: #39ff14 !important;
+    --status-dim: #2dad16 !important;
+    --status-warning: #ffb347 !important;
+  }
+
+  html,
+  body {
+    background: #050805 !important;
+    color: #b6ff9f !important;
+    font-family: "Cascadia Mono", "JetBrains Mono", "Consolas", monospace !important;
+  }
+
+  a {
+    color: #74ff58 !important;
+  }
+
+  input,
+  textarea,
+  select,
+  button {
+    background: #000000 !important;
+    color: #d7ffc8 !important;
+    border: 2px solid var(--status-normal) !important;
+    border-radius: 10px !important;
+  }
+}
+
+/* New tab / home page styling */
+@-moz-document url("about:newtab"), url("about:home") {
+  :root {
+    --nt-radius: 14px !important;
+    --nt-gap: 14px !important;
+    --nt-title-size: 14px !important;
+    --nt-title-weight: 620 !important;
+    --nt-title-spacing: 0.2px !important;
+    --nt-glow: 10px !important;
+    --status-normal: #39ff14 !important;
+    --status-dim: #2dad16 !important;
+    --status-warning: #ffb347 !important;
+  }
+
+  :root[uidensity="compact"] {
+    --nt-radius: 10px !important;
+    --nt-gap: 10px !important;
+    --nt-title-size: 13px !important;
+    --nt-title-weight: 580 !important;
+    --nt-title-spacing: 0.1px !important;
+    --nt-glow: 7px !important;
+  }
+
+  body {
+    background: #050805 !important;
+    color: #b6ff9f !important;
+  }
+
+  /* Search field */
+  .search-handoff-button,
+  .search-inner-wrapper input,
+  .search-wrapper input,
+  .search-wrapper .search-handoff-button {
+    background: #000000 !important;
+    color: #d7ffc8 !important;
+    border: 2px solid var(--status-normal) !important;
+    border-radius: var(--nt-radius) !important;
+    box-shadow: none !important;
+  }
+
+  .search-handoff-button:focus-visible,
+  .search-inner-wrapper input:focus-visible,
+  .search-wrapper input:focus-visible {
+    outline: none !important;
+    box-shadow: 0 0 0 1px var(--status-normal), 0 0 var(--nt-glow) color-mix(in srgb, var(--status-normal) 45%, transparent) !important;
+  }
+
+  /* Top sites tiles/icons */
+  .top-site-outer .tile,
+  .top-site-button .tile,
+  .top-sites-list .top-site-outer .tile {
+    background: #000000 !important;
+    border: none !important;
+    border-radius: var(--nt-radius) !important;
+    box-shadow: none !important;
+    transition: border-color 120ms ease, background 120ms ease, transform 120ms ease !important;
+  }
+
+  .top-site-outer:hover .tile,
+  .top-site-button:hover .tile {
+    background: color-mix(in srgb, #000000 88%, var(--status-dim) 12%) !important;
+    transform: translateY(-1px) !important;
+  }
+
+  .top-site-outer .context-menu-button:hover {
+    color: var(--status-warning) !important;
+  }
+
+  .top-site-outer .title,
+  .top-site-button .title {
+    color: #d7ffc8 !important;
+    font-size: var(--nt-title-size) !important;
+    font-weight: var(--nt-title-weight) !important;
+    letter-spacing: var(--nt-title-spacing) !important;
+    line-height: 1.35 !important;
+    margin-top: calc(var(--nt-gap) - 10px) !important;
+    text-wrap: pretty !important;
+  }
+
+  .top-site-outer .context-menu-button {
+    opacity: 0.6 !important;
+    transition: opacity 120ms ease !important;
+  }
+
+  .top-site-outer:hover .context-menu-button {
+    opacity: 1 !important;
+  }
+
+  .top-site-outer .top-site-inner > a {
+    text-decoration: none !important;
+  }
+}
