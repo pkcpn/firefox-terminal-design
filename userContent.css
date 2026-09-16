@@ -41,6 +41,24 @@
     --status-normal: #39ff14 !important;
     --status-dim: #2dad16 !important;
     --status-warning: #ffb347 !important;
+
+    /* --- Background tuning --- */
+    --nt-bg: #050805 !important;              /* base canvas color */
+    --nt-grid: #39ff14 !important;            /* phosphor color of the mesh */
+    --nt-grid-fine: 26px !important;          /* small cell size */
+    --nt-grid-coarse: 130px !important;       /* large cell size */
+    --nt-grid-a-fine: 4.5% !important;        /* small cell brightness */
+    --nt-grid-a-coarse: 8% !important;        /* large cell brightness */
+    --nt-ambient: 7% !important;              /* static glow behind the search bar */
+    --nt-scanline: 0.2 !important;            /* CRT scanline strength (0 = off) */
+    --nt-drift-ms: 60s !important;            /* how slowly the mesh drifts */
+
+    /* --- Cursor reaction tuning --- */
+    --nt-bloom: 22% !important;               /* strength of the glow under the cursor */
+    --nt-bloom-blur: 46px !important;         /* how soft that glow is */
+    --nt-react-ms: 520ms !important;          /* fade in/out, keep it slow = feels like it follows */
+    --nt-zone-w: 25% !important;              /* hover grid: 4 columns */
+    --nt-zone-h: 50% !important;              /* hover grid: 2 rows */
   }
 
   :root[uidensity="compact"] {
@@ -52,21 +70,224 @@
     --nt-glow: 7px !important;
   }
 
+  /* ==========================================================================
+     1. The canvas itself
+     The whole mesh lives on <html> so it propagates to the page canvas and is
+     painted below every negative-z-index layer. <body> must stay transparent,
+     otherwise it would cover the reactive glow layers defined further down.
+     ========================================================================== */
+  html {
+    background-color: var(--nt-bg) !important;
+    background-image:
+      /* 1. CRT scanlines */
+      repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, var(--nt-scanline)) 0 1px,
+        transparent 1px 3px
+      ),
+      /* 2. vignette + ambient phosphor bloom in one layer */
+      radial-gradient(
+        ellipse 80% 70% at 50% 34%,
+        color-mix(in srgb, var(--nt-grid) var(--nt-ambient), transparent) 0%,
+        transparent 46%,
+        rgba(0, 0, 0, 0.62) 100%
+      ),
+      /* 3-4. fine mesh */
+      linear-gradient(to right, color-mix(in srgb, var(--nt-grid) var(--nt-grid-a-fine), transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--nt-grid) var(--nt-grid-a-fine), transparent) 1px, transparent 1px),
+      /* 5-6. coarse mesh */
+      linear-gradient(to right, color-mix(in srgb, var(--nt-grid) var(--nt-grid-a-coarse), transparent) 1px, transparent 1px),
+      linear-gradient(to bottom, color-mix(in srgb, var(--nt-grid) var(--nt-grid-a-coarse), transparent) 1px, transparent 1px) !important;
+    background-size:
+      auto auto,
+      auto auto,
+      var(--nt-grid-fine) var(--nt-grid-fine),
+      var(--nt-grid-fine) var(--nt-grid-fine),
+      var(--nt-grid-coarse) var(--nt-grid-coarse),
+      var(--nt-grid-coarse) var(--nt-grid-coarse) !important;
+    background-attachment: fixed !important;
+    background-repeat: repeat !important;
+    animation: nt-drift var(--nt-drift-ms) linear infinite !important;
+  }
+
+  /* Very slow drift so the mesh never looks like a frozen texture. */
+  @keyframes nt-drift {
+    from {
+      background-position:
+        0 0,
+        50% 34%,
+        0 0,
+        0 0,
+        0 0,
+        0 0;
+    }
+    to {
+      background-position:
+        0 0,
+        52% 30%,
+        var(--nt-grid-fine) var(--nt-grid-fine),
+        var(--nt-grid-fine) var(--nt-grid-fine),
+        var(--nt-grid-coarse) var(--nt-grid-coarse),
+        var(--nt-grid-coarse) var(--nt-grid-coarse);
+    }
+  }
+
   body {
-    background: #050805 !important;
+    background: transparent !important;
     color: #b6ff9f !important;
   }
+
+  /* ==========================================================================
+     2. Cursor reaction
+     Pure CSS has no cursor coordinates, so the viewport is tiled into eight
+     invisible hover zones built from the ::before/::after of four elements that
+     about:newtab always has. Each zone paints a heavily blurred radial bloom
+     that bleeds far past its own box, so neighbouring zones overlap and the
+     light appears to travel with the pointer instead of snapping per cell.
+     Everything sits at z-index -1: above the canvas, below all content.
+     ========================================================================== */
+  html::before,
+  html::after,
+  body::before,
+  body::after,
+  #root::before,
+  #root::after,
+  main::before,
+  main::after {
+    content: "" !important;
+    display: block !important;
+    position: fixed !important;
+    z-index: -1 !important;
+    width: var(--nt-zone-w) !important;
+    height: var(--nt-zone-h) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    pointer-events: auto !important;
+    background: radial-gradient(
+      circle at 50% 50%,
+      color-mix(in srgb, var(--nt-grid) var(--nt-bloom), transparent) 0%,
+      transparent 68%
+    ) !important;
+    filter: blur(var(--nt-bloom-blur)) !important;
+    opacity: 0 !important;
+    transition: opacity var(--nt-react-ms) ease !important;
+    will-change: opacity !important;
+  }
+
+  html::before:hover,
+  html::after:hover,
+  body::before:hover,
+  body::after:hover,
+  #root::before:hover,
+  #root::after:hover,
+  main::before:hover,
+  main::after:hover {
+    opacity: 1 !important;
+  }
+
+  /* Row 1 */
+  html::before  { top: 0 !important;   left: 0 !important; }
+  html::after   { top: 0 !important;   left: 25% !important; }
+  body::before  { top: 0 !important;   left: 50% !important; }
+  body::after   { top: 0 !important;   left: 75% !important; }
+  /* Row 2 */
+  #root::before { top: 50% !important; left: 0 !important; }
+  #root::after  { top: 50% !important; left: 25% !important; }
+  main::before  { top: 50% !important; left: 50% !important; }
+  main::after   { top: 50% !important; left: 75% !important; }
+
+  /* The hover zones only get events where nothing interactive sits on top, so
+     the full-width layout containers must stop swallowing the pointer. Every
+     actual control gets its events back right afterwards. */
+  #root,
+  .outer-wrapper,
+  main,
+  .non-collapsible-section,
+  .sections-list,
+  .collapsible-section,
+  .top-sites,
+  .top-sites-list,
+  .search-wrapper,
+  .search-inner-wrapper,
+  .body-wrapper {
+    pointer-events: none !important;
+  }
+
+  #root a,
+  #root button,
+  #root input,
+  #root select,
+  #root textarea,
+  #root label,
+  #root [role="button"],
+  #root [role="menuitem"],
+  #root .top-site-outer,
+  #root .search-handoff-button,
+  #root .context-menu,
+  #root .customize-menu,
+  #root .personalize-button,
+  #root .ds-card,
+  #root .card-outer,
+  #root .section-top-bar,
+  #root .weather {
+    pointer-events: auto !important;
+  }
+
+  /* Hovering or focusing the actual UI lifts the whole mesh a notch, so the
+     background answers pointer movement over content too, not just empty space. */
+  html:has(.top-site-outer:hover),
+  html:has(.search-handoff-button:hover),
+  html:has(.search-wrapper input:hover) {
+    --nt-grid-a-fine: 7% !important;
+    --nt-grid-a-coarse: 12% !important;
+    --nt-ambient: 10% !important;
+  }
+
+  html:has(.search-handoff-button:focus-visible),
+  html:has(.search-wrapper input:focus) {
+    --nt-grid-a-fine: 9% !important;
+    --nt-grid-a-coarse: 15% !important;
+    --nt-ambient: 14% !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      animation: none !important;
+    }
+
+    html::before,
+    html::after,
+    body::before,
+    body::after,
+    #root::before,
+    #root::after,
+    main::before,
+    main::after {
+      transition: none !important;
+    }
+  }
+
+  /* ==========================================================================
+     3. Foreground
+     ========================================================================== */
 
   /* Search field */
   .search-handoff-button,
   .search-inner-wrapper input,
   .search-wrapper input,
   .search-wrapper .search-handoff-button {
-    background: #000000 !important;
+    background: color-mix(in srgb, #000000 82%, transparent) !important;
     color: #d7ffc8 !important;
     border: 2px solid var(--status-normal) !important;
     border-radius: var(--nt-radius) !important;
     box-shadow: none !important;
+    backdrop-filter: blur(6px) !important;
+    transition: box-shadow 160ms ease, border-color 160ms ease !important;
+  }
+
+  .search-handoff-button:hover,
+  .search-wrapper input:hover {
+    box-shadow: 0 0 var(--nt-glow) color-mix(in srgb, var(--status-normal) 30%, transparent) !important;
   }
 
   .search-handoff-button:focus-visible,
@@ -80,17 +301,20 @@
   .top-site-outer .tile,
   .top-site-button .tile,
   .top-sites-list .top-site-outer .tile {
-    background: #000000 !important;
+    background: color-mix(in srgb, #000000 86%, transparent) !important;
     border: none !important;
     border-radius: var(--nt-radius) !important;
     box-shadow: none !important;
-    transition: border-color 120ms ease, background 120ms ease, transform 120ms ease !important;
+    transition: border-color 120ms ease, background 120ms ease, transform 120ms ease, box-shadow 200ms ease !important;
   }
 
   .top-site-outer:hover .tile,
   .top-site-button:hover .tile {
     background: color-mix(in srgb, #000000 88%, var(--status-dim) 12%) !important;
     transform: translateY(-1px) !important;
+    box-shadow:
+      0 0 var(--nt-glow) color-mix(in srgb, var(--status-normal) 40%, transparent),
+      0 0 calc(var(--nt-glow) * 4) color-mix(in srgb, var(--status-normal) 18%, transparent) !important;
   }
 
   .top-site-outer .context-menu-button:hover {
