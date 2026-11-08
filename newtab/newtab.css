@@ -40,8 +40,8 @@ h2 { margin: 0; font: inherit; }
 #sites { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
 .site { display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 14px; border: 1px solid #23392c; background: #0a120e; color: var(--text); text-decoration: none; transition: border-color 160ms, background 160ms; }
 .site:hover { border-color: #80ee9880; background: #14271b; }
-.site-top { display: flex; align-items: center; gap: 9px; min-width: 0; }
-.site-icon { width: 18px; height: 18px; object-fit: contain; }
+.site-top { display: flex; align-items: center; gap: 9px; min-width: 0; height: 20px; overflow: hidden; }
+.site-icon { display: block; flex: 0 0 18px; width: 18px !important; height: 18px !important; max-width: 18px !important; max-height: 18px !important; object-fit: contain; object-position: center; }
 .site-initial { color: var(--green); font-size: 16px; }
 .site-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-size: 11px; }
 #sites-status { font-size: 11px; }
