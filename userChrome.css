@@ -238,6 +238,20 @@
   box-shadow: inset 0 -3px 0 var(--status-normal), 0 0 0 1px color-mix(in srgb, var(--status-normal) 42%, transparent) !important;
 }
 
+/* Firefox can expose the active state on the tab or its inner stack. Keep the
+   highlight visible at every layer so theme updates do not hide it. */
+.tabbrowser-tab:is([selected], [visuallyselected]),
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack,
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-background,
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-content {
+  background-color: #163522 !important;
+  border-color: var(--status-normal) !important;
+}
+
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-content {
+  box-shadow: inset 0 -3px 0 var(--status-normal), 0 0 0 1px var(--status-normal) !important;
+}
+
 .tabbrowser-tab[selected] .tab-label,
 .tabbrowser-tab[visuallyselected] .tab-label {
   color: var(--term-text-strong) !important;
