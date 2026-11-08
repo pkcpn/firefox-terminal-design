@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en" data-terminal-newtab>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Terminal</title>
+  <link rel="stylesheet" href="newtab.css">
+  <script src="newtab.js" defer></script>
+</head>
+<body>
+  <canvas id="grid" aria-hidden="true"></canvas>
+  <div class="vignette" aria-hidden="true"></div>
+  <header class="masthead">
+    <span><i class="status-dot"></i> TERMINAL <span class="muted">/ NEW SESSION</span></span>
+    <div class="header-right"><button id="motion" type="button" aria-pressed="false">Pause motion</button><time id="clock"></time></div>
+  </header>
+  <main>
+    <p class="eyebrow">WORKSPACE / 01</p>
+    <h1>A little space<br>to <span>connect.</span></h1>
+    <form id="search" role="search">
+      <label class="sr-only" for="query">Search the web</label>
+      <span class="prompt-symbol" aria-hidden="true">&gt;_</span>
+      <input id="query" type="search" autocomplete="off" spellcheck="false" placeholder="Search the web..." required>
+      <button type="submit" aria-label="Search">↵</button>
+    </form>
+    <p id="search-status" role="status"></p>
+    <section aria-labelledby="sites-heading">
+      <div class="section-label"><h2 id="sites-heading">FREQUENT DESTINATIONS</h2><span id="site-count">00</span></div>
+      <nav id="sites" aria-label="Frequently visited sites"></nav>
+      <p id="sites-status" class="muted">Loading destinations...</p>
+    </section>
+  </main>
+  <footer>
+    <div class="session"><span class="eyebrow">SSH / DEVBOX</span><span class="muted">decorative session</span></div>
+    <div class="command"><span class="user">root@greenfield</span><span class="muted">:~</span><span class="dollar">$</span><span class="cursor" aria-hidden="true"></span></div>
+    <div class="footer-meta"><span>MOVE THROUGH THE GRID</span><span id="coordinates">GRID / IDLE</span></div>
+  </footer>
+</body>
+</html>

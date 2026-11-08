@@ -12,8 +12,8 @@
   --term-rail-width: 5px !important;
   --term-rail-radius: 999px !important;
   --term-tab-inactive-bg: color-mix(in srgb, var(--term-bg) 95%, var(--term-line) 5%) !important;
-  --term-tab-hover-bg: color-mix(in srgb, var(--term-bg) 74%, var(--term-line) 26%) !important;
-  --term-tab-active-bg: color-mix(in srgb, var(--term-bg) 38%, var(--term-line) 62%) !important;
+  --term-tab-hover-bg: color-mix(in srgb, var(--term-bg) 88%, var(--term-line) 12%) !important;
+  --term-tab-active-bg: color-mix(in srgb, var(--term-bg) 78%, var(--term-line) 22%) !important;
   --term-ui-radius: 10px !important;
   --term-ui-gap: 8px !important;
   --term-bookmarks-pad-y: 8px !important;
@@ -216,47 +216,50 @@
   transition: background var(--term-hover-ms) ease, border-color var(--term-hover-ms) ease, box-shadow var(--term-hover-ms) ease !important;
 }
 
-.tabbrowser-tab:hover .tab-background {
+.tabbrowser-tab:not([selected]):not([visuallyselected]):hover .tab-background {
   border-color: transparent !important;
 }
 
-.tabbrowser-tab:hover .tab-content {
+.tabbrowser-tab:not([selected]):not([visuallyselected]):hover .tab-content {
   border-color: var(--status-dim) !important;
   background: var(--term-tab-hover-bg) !important;
 }
 
-.tabbrowser-tab[selected="true"] .tab-background,
-.tabbrowser-tab[visuallyselected="true"] .tab-background {
-  border-color: transparent !important;
-}
-
-.tabbrowser-tab[selected="true"] .tab-content,
-.tabbrowser-tab[visuallyselected="true"] .tab-content {
+.tabbrowser-tab[selected] .tab-background,
+.tabbrowser-tab[visuallyselected] .tab-background {
+  background: transparent !important;
   border-color: var(--status-normal) !important;
-  background: var(--term-tab-active-bg) !important;
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--status-normal) 86%, #ffffff 14%), 0 0 var(--term-tab-glow) color-mix(in srgb, var(--status-normal) 60%, transparent) !important;
 }
 
-.tabbrowser-tab[selected="true"] .tab-content::after,
-.tabbrowser-tab[visuallyselected="true"] .tab-content::after {
-  content: "" !important;
-  position: absolute !important;
-  left: 8px !important;
-  right: 8px !important;
-  bottom: 2px !important;
-  height: 3px !important;
-  border-radius: 3px !important;
-  background: color-mix(in srgb, var(--status-normal) 92%, #ffffff 8%) !important;
+.tabbrowser-tab[selected] .tab-content,
+.tabbrowser-tab[visuallyselected] .tab-content {
+  border-color: var(--status-normal) !important;
+  background: #163522 !important;
+  box-shadow: inset 0 -3px 0 var(--status-normal), 0 0 0 1px color-mix(in srgb, var(--status-normal) 42%, transparent) !important;
 }
 
-.tabbrowser-tab[selected="true"] .tab-label,
-.tabbrowser-tab[visuallyselected="true"] .tab-label {
+/* Firefox can expose the active state on the tab or its inner stack. Keep the
+   highlight visible at every layer so theme updates do not hide it. */
+.tabbrowser-tab:is([selected], [visuallyselected]),
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack,
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-background,
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-content {
+  background-color: #163522 !important;
+  border-color: var(--status-normal) !important;
+}
+
+.tabbrowser-tab:is([selected], [visuallyselected]) > .tab-stack > .tab-content {
+  box-shadow: inset 0 -3px 0 var(--status-normal), 0 0 0 1px var(--status-normal) !important;
+}
+
+.tabbrowser-tab[selected] .tab-label,
+.tabbrowser-tab[visuallyselected] .tab-label {
   color: var(--term-text-strong) !important;
   font-weight: 700 !important;
-  text-shadow: 0 0 8px color-mix(in srgb, var(--term-line) 55%, transparent) !important;
+  text-shadow: none !important;
 }
 
-.tabbrowser-tab:not([selected="true"]):not([visuallyselected="true"]) .tab-label {
+.tabbrowser-tab:not([selected]):not([visuallyselected]) .tab-label {
   color: color-mix(in srgb, var(--term-text) 72%, #000000 28%) !important;
 }
 
