@@ -20,6 +20,11 @@ supports both Firefox's `selected` and `visuallyselected` tab states.
 2. Place `userChrome.css` and `userContent.css` into your Firefox profile `chrome` folder.
 3. Restart Firefox.
 
+The `userContent.css` rules include a native static terminal background for
+Firefox's built-in `about:newtab` and `about:home`. It persists across browser
+restarts and keeps Firefox's own search field, shortcut icons, context menus,
+and customization controls. It does not need the optional extension below.
+
 ## Interactive Terminal New Tab
 
 `newtab/` is an optional, self-contained Firefox desktop extension. It replaces
@@ -68,4 +73,22 @@ npx web-ext build --source-dir newtab --artifacts-dir web-ext-artifacts --overwr
 The generated ZIP is an unsigned submission package, not an installable signed add-on.
 After updating files, use **Reload** on the temporary extension in `about:debugging`
 and open a fresh tab. To restore Firefox's native new tab, remove the extension.
+
+### Mozilla signing process
+
+For Firefox Release, unsigned extensions cannot be installed permanently. The
+usual route is an **unlisted** submission on [addons.mozilla.org](https://addons.mozilla.org/):
+
+1. Create or sign in to a Mozilla Add-ons developer account.
+2. Choose **Submit a New Add-on** and select **On your own**.
+3. Upload the ZIP produced by `web-ext build`.
+4. Select **Unlisted** and complete the required privacy and technical metadata.
+5. Mozilla runs automated validation and may request a manual review.
+6. Download the signed `.xpi` and install it once via **Add-ons and themes > Install Add-on From File...**.
+
+The submission does not require AI-written text. A short factual description,
+the permissions (`topSites`, `search`), and the statement that the SSH prompt is
+decorative are sufficient. The signed add-on then survives normal Firefox
+restarts. The native CSS background remains usable without submitting or
+installing an extension.
 
