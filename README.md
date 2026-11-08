@@ -30,7 +30,8 @@ The bookmarks toolbar remains available; this page does not reproduce Firefox's
 native widgets or shortcut editing controls. Destinations come from Firefox's
 new-tab list, including pinned sites when provided by Firefox. The homepage is unchanged.
 
-The extension uses `topSites` to show local frequent destinations and `search`
+The extension uses `topSites` to show local frequent destinations with their
+Firefox-provided icons and `search`
 to submit a query to your default Firefox search engine in the current tab.
 It has no remote scripts, fonts, favicon requests, telemetry, or backend.
 Only following a destination or submitting a search navigates outside the page.

@@ -140,7 +140,7 @@
       return;
     }
     try {
-      const sites = await browser.topSites.get({limit: 8, newtab: true, includeFavicon: false});
+      const sites = await browser.topSites.get({limit: 8, newtab: true, includeFavicon: true});
       const list = document.querySelector("#sites");
       const seen = new Set();
       for (const site of sites) {
@@ -152,12 +152,20 @@
         link.className = "site"; link.href = url.href;
         const label = site.title || url.hostname;
         link.title = `${label}\n${url.hostname}`;
+        const top = document.createElement("span");
+        top.className = "site-top";
+        if (site.favicon) {
+          const icon = document.createElement("img");
+          icon.className = "site-icon"; icon.src = site.favicon; icon.alt = "";
+          top.append(icon);
+        }
         const initial = document.createElement("span");
         initial.className = "site-initial"; initial.textContent = label.slice(0, 2).toUpperCase();
         initial.setAttribute("aria-hidden", "true");
+        if (site.favicon) initial.hidden = true;
         const title = document.createElement("span");
         title.className = "site-name"; title.textContent = label;
-        link.append(initial, title); list.append(link);
+        top.append(initial); link.append(top, title); list.append(link);
       }
       document.querySelector("#site-count").textContent = String(seen.size).padStart(2, "0");
       status.hidden = seen.size > 0;
