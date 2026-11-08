@@ -1,27 +1,27 @@
 /* Terminal-style theming for built-in Firefox pages */
 @-moz-document url-prefix("about:"), url-prefix("moz-extension://") {
-  :root {
+  :root:not([data-terminal-newtab]) {
     color-scheme: dark !important;
     --status-normal: #39ff14 !important;
     --status-dim: #2dad16 !important;
     --status-warning: #ffb347 !important;
   }
 
-  html,
-  body {
+  html:not([data-terminal-newtab]),
+  html:not([data-terminal-newtab]) body {
     background: #050805 !important;
     color: #b6ff9f !important;
     font-family: "Cascadia Mono", "JetBrains Mono", "Consolas", monospace !important;
   }
 
-  a {
+  html:not([data-terminal-newtab]) a {
     color: #74ff58 !important;
   }
 
-  input,
-  textarea,
-  select,
-  button {
+  html:not([data-terminal-newtab]) input,
+  html:not([data-terminal-newtab]) textarea,
+  html:not([data-terminal-newtab]) select,
+  html:not([data-terminal-newtab]) button {
     background: #000000 !important;
     color: #d7ffc8 !important;
     border: 2px solid var(--status-normal) !important;
